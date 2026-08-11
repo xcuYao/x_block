@@ -16,15 +16,18 @@
 
 ```
 x_block/
-├── manifest.json       # 插件清单（MV3）
-├── content.js          # 核心逻辑：注入按钮 + 模拟原生拉黑
-├── content.css         # 按钮样式
-├── icons/              # 插件图标 16/48/128
+├── manifest.json           # 插件清单（MV3）
+├── content.js              # 核心逻辑：注入按钮 + 模拟原生拉黑
+├── content.css             # 按钮样式
+├── icons/                  # 插件图标 16/48/128
 │   ├── icon16.png
 │   ├── icon48.png
 │   └── icon128.png
 └── assets/
-    └── gen_icons.py    # 图标生成脚本（纯标准库，可选）
+    ├── icon.svg            # 图标矢量源文件（黑底 X + 红禁止圈）
+    ├── store-icon-1024.png # Chrome 商店上架用 1024x1024 大图
+    ├── demo.png            # 效果截图
+    └── gen_icons.py        # 旧版图标生成脚本（可选）
 ```
 
 ## 一、直接加载使用（推荐，最简单）

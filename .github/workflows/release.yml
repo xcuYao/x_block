@@ -40,6 +40,8 @@ jobs:
             content.css \
             icons \
             assets/demo.png \
+            assets/icon.svg \
+            assets/store-icon-1024.png \
             README.md \
             -x "*.DS_Store"
           echo "path=$OUT" >> "$GITHUB_OUTPUT"
