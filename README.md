@@ -25,6 +25,7 @@ x_block/
 │   └── icon128.png
 └── assets/
     ├── icon.svg            # 图标矢量源文件（黑底 X + 红禁止圈）
+    ├── render_icon.py      # 图标栅格化脚本（纯标准库，按商店规范生成各尺寸）
     ├── store-icon-1024.png # Chrome 商店上架用 1024x1024 大图
     ├── demo.png            # 效果截图
     └── gen_icons.py        # 旧版图标生成脚本（可选）
@@ -75,13 +76,14 @@ zip -r x-block.zip manifest.json content.js content.css icons assets/demo.png RE
 
 ## 图标重新生成（可选）
 
-图标由纯标准库脚本生成，无需安装依赖：
+图标遵循 [Chrome 应用商店图片规范](https://developer.chrome.com/docs/webstore/images?hl=zh-cn#icons)：128×128 画布、96×96 内容区、四周透明内边距，深色主体带微弱白光晕。
+
+- [assets/icon.svg](assets/icon.svg) 是矢量源文件，可用任意矢量编辑器打开修改
+- [assets/render_icon.py](assets/render_icon.py) 是纯标准库栅格化脚本（无需安装依赖），会生成 `icons/` 下 16/48/128 三个尺寸和 `assets/store-icon-1024.png` 商店大图：
 
 ```bash
-python3 assets/gen_icons.py
+python3 assets/render_icon.py
 ```
-
-会在 `icons/` 下重新生成三种尺寸的红色禁止图标。
 
 ## 使用说明
 
