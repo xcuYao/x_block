@@ -1,0 +1,54 @@
+name: Release
+
+# 推送形如 v1.0.0 的 tag 时触发：打包 zip 并创建 GitHub Release
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read version from manifest.json
+        id: version
+        run: |
+          VERSION=$(grep -oP '"version"\s*:\s*"\K[^"]+' manifest.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Extension version: $VERSION"
+          # tag 名（去掉 v 前缀）必须与 manifest 版本一致，否则商店上传会被拒绝
+          if [ "v$VERSION" != "${GITHUB_REF#refs/tags/}" ]; then
+            echo "::error::Tag ${GITHUB_REF#refs/tags/} does not match manifest version $VERSION"
+            exit 1
+          fi
+
+      - name: Package extension zip
+        id: zip
+        run: |
+          mkdir -p build
+          OUT="build/x-block-v${{ steps.version.outputs.version }}.zip"
+          # 将发布所需文件打包，manifest.json 必须位于 zip 根目录
+          zip -r "$OUT" \
+            manifest.json \
+            content.js \
+            content.css \
+            icons \
+            assets/demo.png \
+            README.md \
+            -x "*.DS_Store"
+          echo "path=$OUT" >> "$GITHUB_OUTPUT"
+          unzip -l "$OUT" | head -20
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "v${{ steps.version.outputs.version }}"
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: ${{ steps.zip.outputs.path }}
