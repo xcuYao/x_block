@@ -40,6 +40,7 @@ jobs:
             content.css \
             icons \
             assets/demo.png \
+            assets/screenshot-1280x800.jpg \
             assets/icon.svg \
             assets/store-icon-1024.png \
             README.md \
